@@ -4,10 +4,11 @@ import { refresh } from "@/lib/revalidate_path"
 import { Skeleton } from "./ui/skeleton"
 
 interface TimeToLiveProps {
-    ttl: number
+    ttl: number,
+    type: 'list' | 'table'
 }
 
-export default function TimeToLive({ ttl }: TimeToLiveProps){
+export default function TimeToLive({ ttl, type }: TimeToLiveProps){
 
     const [ ready, setReady ] = useState(false)
     
@@ -25,9 +26,9 @@ export default function TimeToLive({ ttl }: TimeToLiveProps){
         
         const tick = () => {
 
-            const s = Math.floor(sec % 60)
-            const m = Math.floor(sec / 60)
             const h = Math.floor(sec / 3600)
+            const m = Math.floor(sec % 3600 / 60)
+            const s = Math.floor(sec % 3600 % 60)
 
             setRemaining({
                 hours:   h,
@@ -64,7 +65,10 @@ export default function TimeToLive({ ttl }: TimeToLiveProps){
     const str_mins  = minutes.toString().padStart(2, '0')
     const str_secs  = seconds.toString().padStart(2, '0')
 
-    
+    if(type == 'list'){
+        return <p>{str_hours}h {str_mins}m {str_secs}s</p>
+    }
+
     { return ready ? (<TableCell>{str_hours}h {str_mins}m {str_secs}s</TableCell>) : (<TableCell><Skeleton className="h-4 w-full bg-accent-foreground" /></TableCell>) }
     
 

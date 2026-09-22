@@ -1,13 +1,13 @@
 "use server"    
 
-import { GetAllKeyValues } from "./interfaces/KeyValue"
-import { APP_BASE_URL, SERVER_BASE_URL } from "@/app/api/base_url"
+import { env } from "@/app/env"
+import { GetAllKeyValues } from "@/lib/interfaces/types"
 
 export async function getAllKeyValues(): Promise<GetAllKeyValues | null> {
 
     try {
 
-        const res = await fetch(`${APP_BASE_URL}/api/keys`, { method: "GET" })
+        const res = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys`, { method: "GET" })
     
         const data: GetAllKeyValues = await res.json()
         
@@ -24,9 +24,7 @@ export async function getAllKeyValues(): Promise<GetAllKeyValues | null> {
 
 export async function deleteKeyValue(key: string){
 
-    const res = await fetch(`${SERVER_BASE_URL}/api/keys/${key}`, {
-        method: "DELETE"
-    })
+    const res = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys/${key}`, { method: "DELETE" })
 
     if(!res.ok) return { status: 500 }
 

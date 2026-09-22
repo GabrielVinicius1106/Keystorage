@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import KeyValuesList from "@/components/KeyValuesList";
 import Form from "@/components/Form";
 import { getAllKeyValues } from "@/lib/data_fetching";
-import { getAllKeyValuesResponse } from "@/lib/interfaces/KeyValue";
+import { getAllKeyValuesResponse, KeyValue } from "@/lib/interfaces/types";
+import { Clock8 } from "lucide-react";
 
 export default async function Home() {
 
@@ -15,14 +16,15 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col flex-1 items-center w-full bg-accent-foreground" >
-      <main className="flex text-secondary flex-1 flex-col items-center gap-12 py-32 sm:items-start">
-        <h1 className="text-3xl font-bold font-mono w-full text-start" >Keystorage App.</h1>
+      <main className="flex text-secondary flex-1 flex-col items-center gap-12 py-16 sm:items-start">
+        <div className="flex flex-col gap-8 px-8 w-full">
+          <h1 className="text-2xl lg:text-4xl font-bold font-mono w-full text-center lg:text-start" >Keystorage App.</h1>
+          <p className="text-center lg:text-start" >Criação de registros CHAVE VALOR com TIME TO LIVE.</p>
+        </div>
 
-        <p>Criação de registros CHAVE VALOR com TEMPO DE VIDA.</p>
+        <div className="flex flex-col w-full gap-8 px-8">
 
-        <div className="flex flex-col gap-8">
-
-          <h1 className="text-2xl font-bold font-mono w-full text-start" >Criar Registro</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold font-mono w-full text-center lg:text-start" >Criar Registro</h1>
 
           {/* Set Key_Value */}
           <Card>
@@ -39,7 +41,7 @@ export default async function Home() {
 
         {/* Get All Key_Values */}
         <div className="w-full" >
-          <h1 className="text-2xl font-bold font-mono w-full text-start py-8" >Todos os Registros</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold font-mono w-full text-center lg:text-start py-8 px-8" >Todos os Registros</h1>
           <KeyValuesList items={elements} /> 
         </div>
 

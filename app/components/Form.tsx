@@ -43,8 +43,6 @@ export default function Form(){
             body: JSON.stringify({ key, value, expires_in })
         })
 
-        console.log(res);
-
         refresh("/")
 
         if(res.status === 200){

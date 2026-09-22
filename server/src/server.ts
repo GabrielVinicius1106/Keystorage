@@ -20,7 +20,7 @@ server.get("/api", (req: FastifyRequest, res: FastifyReply) => {
 })
 
 server.register(cors, {
-    origin: env.ORIGIN,
+    origin: env.NODE_ENV === 'development' ? env.DEV_ORIGIN : env.DOCKER_ORIGIN,
     methods: [ 'GET', 'POST', 'DELETE' ]
 })
 
@@ -29,7 +29,7 @@ server.register(fastifyRateLimit, {
     timeWindow: 60
 })
 
-server.setErrorHandler((error: FastifyError, req: FastifyRequest, res: FastifyReply) => {
+server.setErrorHandler((error: FastifyError, _req: FastifyRequest, res: FastifyReply) => {
     
     if(error instanceof ZodError){
         return res.status(400).send({
@@ -63,7 +63,7 @@ server.setErrorHandler((error: FastifyError, req: FastifyRequest, res: FastifyRe
     }
 })
 
-server.setNotFoundHandler((req: FastifyRequest, res: FastifyReply) => {
+server.setNotFoundHandler((_req: FastifyRequest, res: FastifyReply) => {
     return res.status(404).send({
         code: "HANDLER_NOT_FOUND",
         message: "404 Not Found.",
@@ -71,7 +71,7 @@ server.setNotFoundHandler((req: FastifyRequest, res: FastifyReply) => {
     })
 })
 
-server.addHook("onRequest", (req: FastifyRequest, res: FastifyReply, done) => {
+server.addHook("onRequest", (req: FastifyRequest, _res: FastifyReply, done) => {
 
     // Logs
 
