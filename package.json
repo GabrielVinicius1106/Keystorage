@@ -1,0 +1,21 @@
+{
+  "name": "keystorage",
+  "version": "1.0.0",
+  "workspaces": [
+    "app/",
+    "server/"
+  ],
+  "description": "A Key Storage App based on Redis.",
+  "scripts": {
+    "app":   "docker compose up -d",
+    "build": "docker compose build --no-cache",
+    "start": "docker compose up" 
+  },
+  "keywords": [],
+  "author": "Gabriel Vinícius da Cruz",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

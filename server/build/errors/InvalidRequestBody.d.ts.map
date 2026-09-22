@@ -1,0 +1,1 @@
+{"version":3,"file":"InvalidRequestBody.d.ts","sourceRoot":"","sources":["../../src/errors/InvalidRequestBody.ts"],"names":[],"mappings":"AAAA,OAAO,EAAK,KAAK,QAAQ,EAAE,MAAM,KAAK,CAAC;AAEvC,qBAAa,uBAAwB,SAAQ,KAAK;IAC9C,YAAY,KAAK,EAAE,QAAQ,EAG1B;CACJ"}

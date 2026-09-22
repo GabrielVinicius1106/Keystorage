@@ -1,0 +1,1 @@
+{"version":3,"file":"InvalidRequestBody.js","sourceRoot":"","sources":["../../src/errors/InvalidRequestBody.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAiB,MAAM,KAAK,CAAC;AAEvC,MAAM,OAAO,uBAAwB,SAAQ,KAAK;IAC9C,YAAY,KAAe;QACvB,KAAK,EAAE,CAAA;QACP,IAAI,CAAC,OAAO,GAAG,CAAC,CAAC,aAAa,CAAC,KAAK,CAAC,CAAA;IACzC,CAAC;CACJ"}

@@ -1,0 +1,15 @@
+# Dependencies
+
+node_modules/
+.next/
+out/
+
+# Production
+
+build/
+
+# Env File
+.env
+
+# NextJS Typescript Configs
+next-env.d.ts
