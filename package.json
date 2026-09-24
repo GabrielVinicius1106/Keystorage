@@ -8,8 +8,8 @@
   "description": "A Key Storage App based on Redis.",
   "scripts": {
     "app":   "concurrently 'cd ./server && npm run server' 'cd ./app && npm run app'",
-    "build": "docker compose build --no-cache",
-    "build:cached": "docker compose build",
+    "build:uncached": "docker compose build --no-cache",
+    "build": "docker compose build",
     "start": "docker compose up",
     "start:detached": "docker compose up -d" 
   },

@@ -5,3 +5,5 @@ node_modules/
 .env
 
 .next/
+
+building_containers.txt

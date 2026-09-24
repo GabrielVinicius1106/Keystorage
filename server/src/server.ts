@@ -20,7 +20,7 @@ server.get("/api", (req: FastifyRequest, res: FastifyReply) => {
 })
 
 server.register(cors, {
-    origin: env.NODE_ENV === 'development' ? env.DEV_ORIGIN : env.DOCKER_ORIGIN,
+    origin: env.ORIGIN_URL,
     methods: [ 'GET', 'POST', 'DELETE' ]
 })
 
@@ -86,8 +86,8 @@ server.addHook("onRequest", (req: FastifyRequest, _res: FastifyReply, done) => {
 server.register(applicationRoutes)
 
 server.listen({
-    host: env.HOST,
+    host: env.HOSTNAME,
     port: env.PORT
 }, () => {
-    console.log(`🚀 Server Running: http://${env.HOST}:${env.PORT}/api\n`);
+    console.log(`🚀 Server Running: http://${env.HOSTNAME}:${env.PORT}/api\n`);
 })

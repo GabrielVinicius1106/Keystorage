@@ -4,14 +4,9 @@ import { InvalidEnvironmentVariables } from "../errors/InvalidEnvironmentVariabl
 
 const envBodySchema = z.object({
     NODE_ENV:      z.string(),
-    
-    HOST:          z.string(),
-    DOCKER_HOST:   z.string(),
-
+    HOSTNAME:      z.string(),
     PORT:          z.coerce.number(),
-    
-    DEV_ORIGIN:    z.string(),
-    DOCKER_ORIGIN: z.string(),
+    ORIGIN_URL:    z.string(),
 })
 
 const _env = envBodySchema.safeParse(process.env)

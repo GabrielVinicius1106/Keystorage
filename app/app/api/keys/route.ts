@@ -11,7 +11,7 @@ export async function POST(req: NextRequest){
 
     const { key, value, expires_in } = parsed.data
 
-    const response: Response = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys`, {
+    const response: Response = await fetch(`${env.API_URL}/api/keys`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, value, expires_in })
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest){
 
 export async function GET(){
 
-    const response: Response = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys`, {
+    const response: Response = await fetch(`${env.API_URL}/api/keys`, {
         method: "GET"
     })
 

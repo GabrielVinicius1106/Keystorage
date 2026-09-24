@@ -7,7 +7,7 @@ export async function getAllKeyValues(): Promise<GetAllKeyValues | null> {
 
     try {
 
-        const res = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys`, { method: "GET" })
+        const res = await fetch(`${env.API_URL}/api/keys`, { method: "GET" })
     
         const data: GetAllKeyValues = await res.json()
         
@@ -24,7 +24,7 @@ export async function getAllKeyValues(): Promise<GetAllKeyValues | null> {
 
 export async function deleteKeyValue(key: string){
 
-    const res = await fetch(`${env.NODE_ENV === 'development' ? env.DEV_API_URL : env.PRODUCTION_API_URL}/api/keys/${key}`, { method: "DELETE" })
+    const res = await fetch(`${env.API_URL}/api/keys/${key}`, { method: "DELETE" })
 
     if(!res.ok) return { status: 500 }
 

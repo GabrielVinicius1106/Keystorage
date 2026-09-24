@@ -6,9 +6,12 @@ import KeyValuesList from "@/components/KeyValuesList";
 import Form from "@/components/Form";
 import { getAllKeyValues } from "@/lib/data_fetching";
 import { getAllKeyValuesResponse, KeyValue } from "@/lib/interfaces/types";
-import { Clock8 } from "lucide-react";
+import { connection } from "next/server";
 
 export default async function Home() {
+
+  // Não pré-renderiza em tempo de build. Ou seja, ele não tenta executar requisições no build 
+  await connection()
 
   const data: getAllKeyValuesResponse = await getAllKeyValues()
 

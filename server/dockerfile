@@ -1,25 +1,49 @@
-# ---- Build Stage ----
+# Build
 FROM node:24-alpine AS builder
+
+# Define o Diretório de Trabalho
 WORKDIR /server
 
-COPY package*.json ./
+# Copia DEPENDÊNCIAS do PROJETO para o CONTÊINER
+COPY package.json      ./
+COPY package-lock.json ./
+
+# Instala as Dependências com CLEAR INSTALL
+
+# ci : Clear Install
+
 RUN npm ci
 
+# Copia Raiz do Diretório para RAIZ DO CONTÊINER
 COPY . .
+
+# Executar BUILD
 RUN npm run build
 
-# ---- Production Stage ----
+# Production
 FROM node:24-alpine AS runner
+
+# Define o Diretório de Trabalho
 WORKDIR /server
 
-ENV HOST="127.0.0.1"
+# Variáveis de Ambiente
+ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
 ENV PORT=5000
-ENV ORIGIN="http://localhost:3000"
+ENV ORIGIN_URL=http://app:3000
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+# Copia DEPENDÊNCIAS do PROJETO para o CONTÊINER 
+COPY package.json      ./
+COPY package-lock.json ./
 
+# Instala DEPENDÊNCIAS (não instala dev dependencies)
+RUN npm install --omit=dev
+
+# Puxa a BUILD para o CONTÊINER
 COPY --from=builder /server/build ./build
 
+# Expõe a PORTA 5000
 EXPOSE 5000
+
+# Executa no Terminal
 CMD ["npm", "run", "start"]
