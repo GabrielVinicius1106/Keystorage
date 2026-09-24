@@ -15,6 +15,10 @@ The project is an npm workspaces monorepo with two packages:
 
 The API keeps records in memory and expires them lazily — nothing sweeps the store, entries whose `expires_at` has passed are simply skipped on read. The web client lists every live record, shows a live countdown for each one, and refreshes the list when a record expires.
 
+The browser never calls the API directly. Every request goes through the Next.js server (Server Components, Server Actions and the `app/api/keys` route handler), which forwards it to the API using `API_URL`.
+
+The home page renders dynamically, on every request. It calls `await connection()` so that Next.js does not pre-render it during `next build`, when the API is not reachable (in a Docker build the `server` hostname does not exist yet).
+
 ## Technologies
 
 **API**
@@ -60,9 +64,11 @@ npm run app          # runs the API and the web client together
 ### With Docker
 
 ```bash
-npm run build        # docker compose build --no-cache
+npm run build        # docker compose build
 npm start            # docker compose up
 ```
+
+Both images are multi-stage `node:24-alpine` builds. The web client uses Next.js `output: 'standalone'`, so its runtime image only contains the standalone server (`node server.js`) and the static assets. Inside the Compose network the web client reaches the API at `http://server:5000`.
 
 ## Scripts
 
@@ -71,8 +77,8 @@ Root:
 | Script | Description |
 | --- | --- |
 | `npm run app` | Runs the API and the Next.js dev server concurrently |
-| `npm run build` | `docker compose build --no-cache` |
-| `npm run build:cached` | `docker compose build` |
+| `npm run build` | `docker compose build` |
+| `npm run build:uncached` | `docker compose build --no-cache` |
 | `npm start` | `docker compose up` |
 | `npm run start:detached` | `docker compose up -d` |
 
@@ -101,13 +107,11 @@ Each package has its own `.env` file (both are gitignored). The values are valid
 ```env
 NODE_ENV='development'
 
-HOST='127.0.0.1'
-DOCKER_HOST='0.0.0.0'
+HOSTNAME='127.0.0.1'
 
 PORT=5000
 
-DEV_ORIGIN='http://localhost:3000'
-DOCKER_ORIGIN='http://app:3000'
+ORIGIN_URL='http://localhost:3000'
 ```
 
 `app/.env`:
@@ -115,14 +119,22 @@ DOCKER_ORIGIN='http://app:3000'
 ```env
 NODE_ENV='development'
 
-DEV_HOST='127.0.0.1'
-PRODUCTION_HOST='0.0.0.0'
+HOSTNAME='127.0.0.1'
 
-DEV_API_URL='http://localhost:5000'
-PRODUCTION_API_URL='http://server:5000'
+PORT=3000
+
+API_URL='http://localhost:5000'
 ```
 
-`NODE_ENV` selects between the `DEV_*` and the `DOCKER_*` / `PRODUCTION_*` values, so the client reaches the API at `localhost:5000` locally and at `server:5000` on the Docker Compose network.
+| Variable | Package | Description |
+| --- | --- | --- |
+| `NODE_ENV` | both | Runtime environment |
+| `HOSTNAME` | both | Interface the process listens on (`0.0.0.0` in Docker) |
+| `PORT` | both | Listening port |
+| `ORIGIN_URL` | server | Origin allowed by CORS |
+| `API_URL` | app | Base URL the web client uses to call the API (`http://server:5000` in Docker) |
+
+The `.env` files are only used for local development. They are excluded from the Docker images by `.dockerignore`, and in Docker the values come from the `ENV` lines in each `dockerfile` and the `environment` block in `compose.yml`. In `compose.yml` the values are written without quotes, because in list syntax (`- KEY=value`) quotes would become part of the value.
 
 ## API
 
@@ -227,7 +239,7 @@ Rate limiting is applied globally at 10000 requests per window.
 ```
 .
 ├── app/                  # Next.js web client
-│   ├── app/              # App Router pages, layout, env validation
+│   ├── app/              # App Router pages, layout, env validation, api/keys route handler
 │   ├── components/       # Form, KeyValuesList, TimeToLive, shadcn/ui primitives
 │   └── lib/              # data fetching, server actions, schemas, types
 ├── server/               # Fastify API
