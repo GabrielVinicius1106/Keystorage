@@ -34,14 +34,14 @@ export default function KeyValuesList({ items }: KeyValuesListProps){
         }
 
         toast.add({
-            title: 'Deletado com Sucesso.',
+            title: 'Registro Deletado com Sucesso.',
             type: 'success'
         })
 
         refresh('/')
 
     }
-
+    
     const width = getWindowWidth()
 
     const num_elements = items.length
